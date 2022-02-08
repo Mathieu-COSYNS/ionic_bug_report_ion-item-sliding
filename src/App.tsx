@@ -1,42 +1,55 @@
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+import {
+  IonApp,
+  IonButton,
+  IonContent,
+  IonItem,
+  IonItemOption,
+  IonItemOptions,
+  IonItemSliding,
+  IonLabel,
+  IonList,
+  setupIonicReact,
+} from "@ionic/react";
 
 /* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
+import "@ionic/react/css/core.css";
 
 /* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
+import "@ionic/react/css/normalize.css";
+import "@ionic/react/css/structure.css";
+import "@ionic/react/css/typography.css";
 
-/* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
-
-/* Theme variables */
-import './theme/variables.css';
+import { useRef } from "react";
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+  const slidingRef = useRef<HTMLIonItemSlidingElement>(null);
+
+  const handleClick = () => {
+    slidingRef.current?.close();
+    // This will allow users to slide the item
+  };
+
+  return (
+    <IonApp>
+      <IonContent>
+        <IonButton onClick={handleClick}>Reproduce Bug</IonButton>
+        <IonList>
+          <IonItemSliding ref={slidingRef} disabled={true}>
+            <IonItem>
+              <IonLabel>Item</IonLabel>
+            </IonItem>
+            <IonItemOptions side="end">
+              <IonItemOption onClick={() => console.log("unread clicked")}>
+                Unread
+              </IonItemOption>
+            </IonItemOptions>
+          </IonItemSliding>
+        </IonList>
+      </IonContent>
+    </IonApp>
+  );
+};
 
 export default App;
